@@ -1,0 +1,117 @@
+[
+{
+    "model": "products.platform",
+    "pk": 1,
+    "fields": {
+        "created_by": 1,
+        "modified_by": 1,
+        "created": "2025-12-05T07:31:18.923Z",
+        "modified": "2025-12-08T02:24:41.385Z",
+        "name": "eBay",
+        "base_url": "https://www.ebay.com/",
+        "currency": "AUD",
+        "is_active": true,
+        "scraping_delay": 2
+    }
+},
+{
+    "model": "products.platform",
+    "pk": 2,
+    "fields": {
+        "created_by": 1,
+        "modified_by": null,
+        "created": "2025-12-05T07:41:15.788Z",
+        "modified": "2025-12-05T07:41:15.788Z",
+        "name": "Lazada",
+        "base_url": "https://www.lazada.com.my/",
+        "currency": "MYR",
+        "is_active": true,
+        "scraping_delay": 2
+    }
+},
+{
+    "model": "products.platform",
+    "pk": 3,
+    "fields": {
+        "created_by": 1,
+        "modified_by": 1,
+        "created": "2025-12-05T07:41:46.251Z",
+        "modified": "2025-12-08T02:14:09.849Z",
+        "name": "AliExpress",
+        "base_url": "https://www.aliexpress.com/",
+        "currency": "RM(MYR)",
+        "is_active": true,
+        "scraping_delay": 2
+    }
+},
+{
+    "model": "products.product",
+    "pk": 1,
+    "fields": {
+        "created_by": 1,
+        "modified_by": 1,
+        "created": "2025-12-07T13:35:14.247Z",
+        "modified": "2025-12-10T02:32:15.414Z",
+        "name": "Iphone 17 Pro (256 GB)",
+        "category": "Electronics",
+        "description": "The innovative design for iPhone 17 Pro delivers exceptional durability, breakthrough battery life and unlocks the extraordinary power of the A19 Pro chip. The 48MP Pro Fusion camera system has the longest iPhone Telephoto ever with 8x optical‑quality zoom, and the new Center Stage front camera for smarter group selfies and Dual Capture video. It has Ceramic Shield 2 on the front for 3x better scratch resistance, a 4x more crack‑resistant Ceramic Shield back and a forged aluminium unibody that dissipates heat. Helpful Apple Intelligence tools like Clean Up and more.",
+        "slug": "iphone-17-pro",
+        "image_url": "",
+        "is_active": true
+    }
+},
+{
+    "model": "products.productprice",
+    "pk": 1,
+    "fields": {
+        "created_by": 1,
+        "modified_by": 1,
+        "created": "2025-12-07T13:49:01.227Z",
+        "modified": "2025-12-08T02:14:57.609Z",
+        "product": 1,
+        "platform": 3,
+        "price": "9872.78",
+        "currency": "RM",
+        "product_url": "https://www.aliexpress.com/item/1005009921670806.html?spm=a2g0o.productlist.main.1.47f71dbfbJyevO&algo_pvid=1ee15fee-991a-4ce4-bd9b-a7fa0d4c09b9&algo_exp_id=1ee15fee-991a-4ce4-bd9b-a7fa0d4c09b9-0&pdp_ext_f=%7B%22order%22%3A%225%22%2C%22eval%22%3A%221%22%2C%22fromPage%22%3A%22search%22%7D&pdp_npi=6%40dis%21MYR%219872.78%219872.78%21%21%212355.71%212355.71%21%402151e6dc17651599594571500e30f2%2112000051858027372%21sea%21MY%210%21ABX%211%210%21n_tag%3A-29910%3Bd%3A8963d6d%3Bm03_new_user%3A-29895&curPageLogUid=wP8i5x5P1aMe&utparam-url=scene%3Asearch%7Cquery_from%3A%7Cx_object_id%3A1005009921670806%7C_p_origin_prod%3A",
+        "scraped_at": "2025-12-07T13:49:01.227Z",
+        "availability": "In Stock",
+        "seller_name": "Ophone Store"
+    }
+},
+{
+    "model": "products.productprice",
+    "pk": 2,
+    "fields": {
+        "created_by": 1,
+        "modified_by": 1,
+        "created": "2025-12-07T13:53:36.293Z",
+        "modified": "2025-12-08T02:12:11.963Z",
+        "product": 1,
+        "platform": 2,
+        "price": "5499.00",
+        "currency": "RM",
+        "product_url": "https://www.lazada.com.my/products/ready-stock-apple-iphone-17-pro-i4705337596-s26424129959.html",
+        "scraped_at": "2025-12-07T13:53:36.293Z",
+        "availability": "In Stock",
+        "seller_name": "Machines Flagship Store"
+    }
+},
+{
+    "model": "products.productprice",
+    "pk": 3,
+    "fields": {
+        "created_by": 1,
+        "modified_by": 1,
+        "created": "2025-12-07T13:55:16.948Z",
+        "modified": "2025-12-08T02:25:28.158Z",
+        "product": 1,
+        "platform": 1,
+        "price": "2499.00",
+        "currency": "AUD",
+        "product_url": "https://www.ebay.com/itm/167783728637?_trkparms=amclksrc%3DITM%26aid%3D1110018%26algo%3DHOMESPLICE.COMPLISTINGS%26ao%3D1%26asc%3D20210609144404%26meid%3De3a38a19673f49cca6638d337de3db00%26pid%3D101196%26rk%3D4%26rkt%3D12%26sd%3D127547604390%26itm%3D167783728637%26pmt%3D1%26noa%3D0%26pg%3D2332490%26algv%3DCompVIDesktopATF2V6ReplaceKnnV4WithVectorDbNsOptHotPlRecallWithSiblingFilter%26brand%3DApple&_trksid=p2332490.c101196.m2219&itmprp=cksum%3A167783728637e3a38a19673f49cca6638d337de3db00%7Cenc%3AAQAKAAABQIObiuteozFaahfHli5t01UIStMdUUaYczAbGaV87lJkYZlnqhPs6hnMXGASN4AJ2yFwbUKfsmeb7meQT9YaEGG7E0Yt63%252FcPRE1o4XweVgLhTT94orMyr0Mx%252BdDZRVLfJSKpgeOC9Tvg0A%252F6EoJBbJdGxxDxc4oA9lJM87U7byYRe5LwHJPvNf7MnSf24qzxR5bgO9Kpd4jU3G%252F2JH%252BHKHd4Y1gR6Fj6iYnv%252B4CPIeIXIgaDZ0GBp2Rj17ZDYTkshSNWO3d5%252BFjgvbm5m%252BO%252BPnk3t1FPdPQd8Fn5Dq9FO8S%252BXeZOS43xbVzKffJE4QLqGE5qHGkIsoiDzjHzp9xUo4d9n3U4IHhrRQHemws90oX%252BBT9adAMQ%252B82OtbtNCcK6WObDNsiYw6FEwYdHpGp7TR5bhxrR9l6a7axD43t5KNu%7Campid%3APL_CLK%7Cclp%3A2332490&itmmeta=01KBXW7E3S6HR1436C0455CG94",
+        "scraped_at": "2025-12-07T13:55:16.948Z",
+        "availability": "In Stock",
+        "seller_name": "OzTech Hub"
+    }
+}
+]

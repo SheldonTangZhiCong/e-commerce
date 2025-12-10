@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - Price Comparison System{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="hero-content text-center">
+            <h1 class="hero-title">
+                <i class="bi bi-graph-up-arrow"></i> Price Comparison System
+            </h1>
+            <p class="hero-subtitle">
+                Compare product prices across multiple e-commerce platforms in real-time to find the best deals
+            </p>
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <a class="btn btn-light btn-lg px-4 py-3" href="{% url 'pages:product_list' %}" role="button">
+                    <i class="bi bi-list-ul me-2"></i> View All Products
+                </a>
+                <a class="btn btn-outline-light btn-lg px-4 py-3" href="/admin/" role="button">
+                    <i class="bi bi-gear me-2"></i> Admin Panel
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="mb-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card card h-100 p-4">
+                    <div class="feature-icon bg-primary bg-gradient text-white mx-auto">
+                        <i class="bi bi-shop"></i>
+                    </div>
+                    <div class="card-body text-center">
+                        <h5 class="card-title fw-bold">Multi-Platform Support</h5>
+                        <p class="card-text text-muted">
+                            Supports major e-commerce platforms including Shopee, Lazada, Amazon, and more
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card card h-100 p-4">
+                    <div class="feature-icon bg-success bg-gradient text-white mx-auto">
+                        <i class="bi bi-graph-up"></i>
+                    </div>
+                    <div class="card-body text-center">
+                        <h5 class="card-title fw-bold">Price Trends</h5>
+                        <p class="card-text text-muted">
+                            7-day price fluctuation charts to help you find the best time to buy
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card card h-100 p-4">
+                    <div class="feature-icon bg-info bg-gradient text-white mx-auto">
+                        <i class="bi bi-robot"></i>
+                    </div>
+                    <div class="card-body text-center">
+                        <h5 class="card-title fw-bold">AI Recommendations</h5>
+                        <p class="card-text text-muted">
+                            Intelligent price analysis with automatic purchase recommendations
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Products Section -->
+{% if products %}
+<section class="mb-5">
+    <div class="container">
+        <h2 class="section-title text-center">Featured Products</h2>
+        <div class="row g-4">
+            {% for product in products %}
+            <div class="col-md-6 col-lg-4">
+                <div class="product-card card h-100">
+                    {% if product.image_url %}
+                    <img src="{{ product.image_url.url }}" class="product-card-img card-img-top" alt="{{ product.name }}">
+                    {% else %}
+                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 220px;">
+                        <i class="bi bi-image text-muted" style="font-size: 4rem;"></i>
+                    </div>
+                    {% endif %}
+                    <div class="card-body d-flex flex-column">
+                        <div class="mb-2">
+                            <span class="badge bg-secondary">{{ product.category|default:"Uncategorized" }}</span>
+                        </div>
+                        <h5 class="card-title fw-bold mb-3">{{ product.name }}</h5>
+                        
+                        {% if product.lowest_price_obj %}
+                        <div class="mt-auto">
+                            <div class="mb-2">
+                                <span class="price-badge-modern price-lowest">
+                                    {{ product.lowest_price_obj.currency }} {{ product.lowest_price_obj.price|floatformat:2 }}
+                                </span>
+                            </div>
+                            <p class="text-muted small mb-3">
+                                <i class="bi bi-shop me-1"></i> {{ product.lowest_price_obj.platform.name }}
+                                {% if product.platform_count > 1 %}
+                                <span class="ms-2">
+                                    <i class="bi bi-collection me-1"></i> {{ product.platform_count }} platforms
+                                </span>
+                                {% endif %}
+                            </p>
+                            {% if product.highest_price_obj and product.highest_price_obj != product.lowest_price_obj %}
+                            <p class="text-muted small">
+                                Highest: {{ product.highest_price_obj.currency }} {{ product.highest_price_obj.price|floatformat:2 }}
+                            </p>
+                            {% endif %}
+                        </div>
+                        {% else %}
+                        <div class="mt-auto">
+                            <p class="text-muted">No price data available</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer bg-white border-0 pt-0">
+                        <a href="{% url 'pages:product_detail' product.slug %}" class="btn btn-primary w-100">
+                            View Details <i class="bi bi-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-5">
+            <a href="{% url 'pages:product_list' %}" class="btn btn-outline-primary btn-lg">
+                View All Products <i class="bi bi-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+{% else %}
+<section class="mb-5">
+    <div class="container">
+        <div class="alert alert-info border-0 shadow-sm" role="alert">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-info-circle fs-3 me-3"></i>
+                <div>
+                    <h5 class="alert-heading mb-1">No Products Available</h5>
+                    <p class="mb-0">Please add products and platforms in the admin panel, then run the scraper to collect price data.</p>
+                    <a href="/admin/" class="btn btn-sm btn-primary mt-2">
+                        <i class="bi bi-gear me-1"></i> Go to Admin Panel
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Stats Section -->
+{% if products %}
+<section class="mb-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4 col-6">
+                <div class="stats-card">
+                    <div class="stats-number">{{ products|length }}</div>
+                    <div class="text-muted mt-2">Tracked Products</div>
+                </div>
+            </div>
+            <div class="col-md-4 col-6">
+                <div class="stats-card">
+                    <div class="stats-number">
+                        {% if products %}
+                            {% for product in products %}
+                                {% if product.platform_count %}
+                                    {{ product.platform_count|add:0 }}
+                                    {% if not forloop.last %}+{% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}0{% endif %}
+                    </div>
+                    <div class="text-muted mt-2">Price Records</div>
+                </div>
+            </div>
+            <div class="col-md-4 col-6">
+                <div class="stats-card">
+                    <div class="stats-number">3+</div>
+                    <div class="text-muted mt-2">Supported Platforms</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

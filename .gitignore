@@ -15,6 +15,7 @@ dist/
 
 # Log files
 *.log
+*.logs
 
 # Package files
 *.jar
@@ -41,10 +42,19 @@ Thumbs.db
 *.war
 
 # Large media files
-*.mp4
 *.tiff
 *.avi
 *.flv
 *.mov
 *.wmv
 
+.vscode/
+
+ecommerce/logs
+ecommerce/logs/error.log
+ecommerce/media
+ecommerce/cron_mail.log
+ecommerce/core/settings/local.py
+ecommerce/logs/*.log
+ecommerce/assests
+ecommerce/assets

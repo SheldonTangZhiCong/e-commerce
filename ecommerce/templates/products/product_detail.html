@@ -1,0 +1,243 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} - Price Comparison{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/products.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'pages:home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'pages:product_list' %}">Products</a></li>
+                <li class="breadcrumb-item active">{{ product.name }}</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            {% if product.image_url %}
+            <img src="{{ product.image_url.url }}" class="card-img-top" alt="{{ product.name }}">
+            {% else %}
+            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 300px;">
+                <i class="bi bi-image" style="font-size: 5rem; color: #ccc;"></i>
+            </div>
+            {% endif %}
+            <div class="card-body">
+                <h3 class="card-title">{{ product.name }}</h3>
+                <p class="card-text">
+                    <span class="badge bg-primary">{{ product.category|default:"Uncategorized" }}</span>
+                </p>
+                {% if product.description %}
+                <p class="card-text">{{ product.description }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <!-- AI Summary -->
+        {% if ai_summary %}
+        <div class="alert alert-success mb-4">
+            <h5><i class="bi bi-robot"></i> AI Recommendation</h5>
+            <p class="mb-0">{{ ai_summary }}</p>
+        </div>
+        {% endif %}
+
+        <!-- Price Statistics -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h6 class="text-muted">Lowest Price</h6>
+                        {% if lowest_price %}
+                        <h4 class="lowest-price">{{ lowest_price.get_price_display_with_original }}</h4>
+                        <small class="text-muted">{{ lowest_price.platform.name }}</small>
+                        {% else %}
+                        <p class="text-muted">No data</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h6 class="text-muted">Highest Price</h6>
+                        {% if highest_price %}
+                        <h4 class="highest-price">{{ highest_price.get_price_display_with_original }}</h4>
+                        <small class="text-muted">{{ highest_price.platform.name }}</small>
+                        {% else %}
+                        <p class="text-muted">No data</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h6 class="text-muted">Average Price</h6>
+                        {% if average_price %}
+                        <h4>RM {{ average_price|floatformat:2 }}</h4>
+                        {% else %}
+                        <p class="text-muted">No data</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Latest Prices Table -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5><i class="bi bi-table"></i> Price Comparison by Platform</h5>
+            </div>
+            <div class="card-body">
+                {% if latest_prices %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Platform</th>
+                                <th>Price</th>
+                                <th>Stock Status</th>
+                                <th>Last Updated</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for price in latest_prices %}
+                            <tr {% if price == lowest_price %}class="table-success"{% endif %}>
+                                <td><strong>{{ price.platform.name }}</strong></td>
+                                <td>
+                                    <span class="price-badge {% if price == lowest_price %}lowest-price{% elif price == highest_price %}highest-price{% endif %}">
+                                        {{ price.get_price_display_with_original }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if price.availability %}
+                                    <span class="badge {% if 'stock' in price.availability|lower %}bg-success{% else %}bg-danger{% endif %}">
+                                        {{ price.availability }}
+                                    </span>
+                                    {% else %}
+                                    <span class="badge bg-secondary">Unknown</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <small>{{ price.scraped_at|date:"Y-m-d H:i" }}</small>
+                                </td>
+                                <td>
+                                    {% if price.product_url %}
+                                    <a href="{{ price.product_url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-box-arrow-up-right"></i> View
+                                    </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">No price data available. Please run the scraper command to collect price information.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Price Trend Chart -->
+        {% if chart_data %}
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="bi bi-graph-up"></i> 7-Day Price Trend</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="priceChart" height="100"></canvas>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% if chart_data_json %}
+<script>
+    const ctx = document.getElementById('priceChart').getContext('2d');
+    const chartData = {{ chart_data_json }};
+    
+    const datasets = [];
+    const colors = ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#00f2fe'];
+    
+    // Collect all unique dates
+    const allDatesSet = new Set();
+    Object.values(chartData).forEach(platformData => {
+        platformData.dates.forEach(date => allDatesSet.add(date));
+    });
+    const allDates = Array.from(allDatesSet).sort();
+    
+    // Create datasets for each platform
+    let colorIndex = 0;
+    Object.entries(chartData).forEach(([platformName, platformData]) => {
+        // Map prices to all dates (fill with null if no data for that date)
+        const priceData = allDates.map(date => {
+            const dateIndex = platformData.dates.indexOf(date);
+            return dateIndex !== -1 ? platformData.prices[dateIndex] : null;
+        });
+        
+        datasets.push({
+            label: platformName,
+            data: priceData,
+            borderColor: colors[colorIndex % colors.length],
+            backgroundColor: colors[colorIndex % colors.length] + '20',
+            tension: 0.4,
+            fill: false,
+            spanGaps: true
+        });
+        colorIndex++;
+    });
+    
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: allDates,
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    title: {
+                        display: true,
+                        text: 'Price'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Time'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false
+                }
+            }
+        }
+    });
+</script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Products - Price Comparison System{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/products.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-list-ul"></i> Product List</h1>
+    <a href="/admin/products/product/add/" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Add Product
+    </a>
+</div>
+
+{% if products %}
+<div class="product-container" style="min-height:75vh;">
+    <div class="row">
+        {% for product in products %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            {# Add d-flex and flex-column here #}
+            <div class="card h-100 d-flex flex-column"> 
+                {% if product.image_url %}
+                <img src="{{ product.image_url.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+                {% else %}
+                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                    <i class="bi bi-image" style="font-size: 3rem; color: #ccc;"></i>
+                </div>
+                {% endif %}
+                
+                {# Add flex-grow-1 here #}
+                <div class="card-body flex-grow-1"> 
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">
+                        <span class="badge bg-secondary">{{ product.category|default:"Uncategorized" }}</span>
+                    </p>
+                    
+                    {% if product.lowest_price_obj %}
+                    <div class="mb-2">
+                        <span class="price-badge lowest-price">
+                            <i class="bi bi-arrow-down-circle"></i> Lowest: {{ product.lowest_price_obj.currency }} {{ product.lowest_price_obj.price|floatformat:2 }}
+                        </span>
+                    </div>
+                    {# ... other price divs ... #}
+                    {% if product.highest_price_obj %}
+                    <div class="mb-2">
+                        <span class="price-badge highest-price">
+                            <i class="bi bi-arrow-up-circle"></i> Highest: {{ product.highest_price_obj.currency }} {{ product.highest_price_obj.price|floatformat:2 }}
+                        </span>
+                    </div>
+                    {% endif %}
+                    {% if product.average_price %}
+                    <div class="mb-2">
+                        <span class="text-muted">
+                            <i class="bi bi-calculator"></i> Average: {{ product.lowest_price_obj.currency }} {{ product.average_price|floatformat:2 }}
+                        </span>
+                    </div>
+                    {% endif %}
+                    <p class="text-muted small mt-2">
+                        <i class="bi bi-shop"></i> {{ product.platform_count }} platform(s) with data
+                    </p>
+                    {% else %}
+                    <p class="text-muted">No price data available</p>
+                    {% endif %}
+                </div>
+                <div class="card-footer bg-white">
+                    <a href="{% url 'pages:product_detail' product.slug %}" class="btn btn-sm btn-primary w-100">
+                        View Price Comparison <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% else %}
+<div class="product-container" style="min-height:100vh;">
+    <div class="alert alert-info">
+        <i class="bi bi-info-circle"></i> No products available. Please add products in the admin panel first.
+    </div>
+</div>
+{% endif %}
+{% endblock %}

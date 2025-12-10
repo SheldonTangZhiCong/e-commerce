@@ -1,0 +1,40 @@
+/* Base styles for the entire application */
+body {
+    background-color: #f8f9fa;
+}
+
+.navbar {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.card {
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.price-badge {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.lowest-price {
+    color: #28a745;
+}
+
+.highest-price {
+    color: #dc3545;
+}
+
+.footer {
+    background-color: #343a40;
+    color: white;
+    padding: 2rem 0;
+    margin-top: 3rem;
+}
+
