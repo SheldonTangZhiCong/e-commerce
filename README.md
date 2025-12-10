@@ -441,9 +441,7 @@ The scraper includes:
 
 ### Traditional Scraper Problems
 
-- ❌ JavaScript-loaded prices
 - ❌ CSS selectors change frequently
-- ❌ Anti-bot protection
 - ❌ Requires update for each platform
 
 ### AI Vision Scraper Solution
@@ -462,6 +460,7 @@ The scraper includes:
 - ✅ Adapts to website changes
 - ✅ Same code for all platforms
 - ✅ Reads like a human would
+- ⚠️ But some ecommerce platforms like Shopee will have high secured by anti-bot system which can't direct screenshot at the product page.
 
 ---
 
